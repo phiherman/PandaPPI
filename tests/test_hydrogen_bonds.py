@@ -5,6 +5,7 @@ These use plain stub atoms rather than a PDB: the function only reads `.element`
 """
 import warnings
 
+import numpy as np
 import pytest
 
 from pandappi.interactions import hydrogen_bonds
@@ -25,6 +26,9 @@ class _Atom:
 
     def get_parent(self):
         return self._residue
+
+    def __sub__(self, other):  # Bio.PDB.Atom gives the distance via subtraction
+        return float(np.linalg.norm(np.subtract(self.coord, other.coord)))
 
 
 def _two_chains(distance=3.0):
